@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card">
+    <div class="card-body login-card-body">
+        {% csrf_token %}
+        <div class="row">
+            <p class="login-box-msg" >{{text}}</p>
+            <input type="text" name="qid" id="qid" value="{{ id }}" hidden>
+        </div>
+        {% if type == "m" %}
+            {% for i in cases%}
+                <div class="row">
+                    <div class="col-1">
+                        <input type="checkbox" class="answers" name="answers[]" value="{{i}}">
+                    </div>
+                    <div class="col-11">
+                        <p>{{i}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if type == "s" %}
+            {% for i in cases%}
+                <div class="row">
+                    <div class="col-1">
+                        <input type="radio" class="answers" name="answers" value="{{i}}">
+                    </div>
+                    <div class="col-11">
+                        <p>{{i}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        
+        <div class="row" id="buttonRow">
+          <div class="col-1"></div>
+          <!-- /.col -->
+          <div class="col-10" id="mainBtn">
+            <button type="submit" id="continue" class="btn btn-primary btn-block btn-flat">ثبت و ادامه</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      <!-- /.social-auth-links -->
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+
+{% endblock main%}

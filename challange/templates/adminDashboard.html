@@ -1,0 +1,146 @@
+
+{% extends 'dashboardBase.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">مسابقه اول</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>نام شرکت کننده</th>
+                    <th>شماره تلفن</th>
+                    <th>کد پرسنلی</th>
+                    <th>تعداد کل سوالات</th>
+                    <th>تعداد کل جواب ها</th>
+                    <th>تعداد جواب درست</th>
+                  </tr>
+                  {% for data in datas %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ data.member.name }}</td>
+                      <td>{{ data.member.phone }}</td>
+                      <td>{{ data.member.personalCode }}</td>
+                      <td>{{ data.tournament.howmany }}</td>
+                      <td>{{ data.all_answer }}</td>
+                      <td>{{ data.all_answer_correct }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">مسابقه دوم</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>نام شرکت کننده</th>
+                    <th>شماره تلفن</th>
+                    <th>کد پرسنلی</th>
+                    <th>تعداد کل سوالات</th>
+                    <th>تعداد کل جواب ها</th>
+                    <th>تعداد جواب درست</th>
+                  </tr>
+                  {% for data in datas2 %}
+                    tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ data.member.name }}</td>
+                      <td>{{ data.member.phone }}</td>
+                      <td>{{ data.member.personalCode }}</td>
+                      <td>{{ data.tournament.howmany }}</td>
+                      <td>{{ data.all_answer }}</td>
+                      <td>{{ data.all_answer_correct }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">مسابقه سوم</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table class="table table-bordered">
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>نام شرکت کننده</th>
+                    <th>شماره تلفن</th>
+                    <th>کد پرسنلی</th>
+                    <th>تعداد کل سوالات</th>
+                    <th>تعداد کل جواب ها</th>
+                    <th>تعداد جواب درست</th>
+                  </tr>
+                  {% for data in datas3 %}
+                    tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ data.member.name }}</td>
+                      <td>{{ data.member.phone }}</td>
+                      <td>{{ data.member.personalCode }}</td>
+                      <td>{{ data.tournament.howmany }}</td>
+                      <td>{{ data.all_answer }}</td>
+                      <td>{{ data.all_answer_correct }}</td>
+                    </tr>
+                  {% endfor %}
+                </table>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                  <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </div>
+
+{% endblock main %}
