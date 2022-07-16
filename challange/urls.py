@@ -4,6 +4,7 @@ from .views import home, loginPage, sendCode, checkCode, tournament, submitAnswe
 
 urlpatterns = [
     path('adminDashboard', home),
+    path('', loginPage),
     path('login', loginPage),
     path('challenge/sendCode', sendCode),
     path('challenge/checkCode', checkCode),

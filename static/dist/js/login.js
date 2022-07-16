@@ -45,8 +45,13 @@ $(document).ready(function () {
                     phone: phone,
                     code: code
                 },
-                success: function () {
-                    location.href = "/questions";
+                success: function (response) {
+                    if (response.valid) {
+                        location.href = "/adminDashboard";    
+                    }else{
+                        location.href = "/questions";
+                    }
+                    
                 },
                 error: function (response) {
                     alert("کد اشتباه است.");

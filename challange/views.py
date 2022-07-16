@@ -6,78 +6,48 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from time import time
 import datetime as dt
+import requests
+import json
 
 
+def getSmsToken():
+    data = {
+            'UserApiKey': 'ba4c81a792806d5eca486d54',
+            'SecretKey': '8WTA9mWWDf2BWpH*FyGB6Xr4Cq%!8FDw4'
+            }
+    json_object = json.dumps(data, indent=4)
+    r = requests.post('https://RestfulSms.com/api/Token',
+                      headers={'Content-Type': 'application/json'},
+                      data=json_object)
+    dataResponse = r.json()
+    return (dataResponse["TokenKey"])
+
+
+def sendSMS(code,phone):
+    token = getSmsToken()
+    data = {
+        "ParameterArray": [
+            {"Parameter": "verifCode", "ParameterValue": code}
+        ],
+        "Mobile": phone,
+        "TemplateId": "68064"
+    }
+    json_object = json.dumps(data, indent=4)
+    r = requests.post('https://RestfulSms.com/api/UltraFastSend',
+                      headers={
+                            'Content-Type': 'application/json',
+                            'x-sms-ir-secure-token': token
+                        },
+                      data=json_object
+                    )
+    return True
+
+@login_required(login_url='/login')
 def home(request):
-    datas = []
-    datas2 = []
-    datas3 = []
-    cash = {}
-    counter = 1
-    isCorrect = [0, 0, 0]
-    answerCounter = [0, 0, 0]
-    allq = [0, 0, 0]
     TournamentIdObj1 = Tournament.objects.only('id').get(id=1)
     TournamentIdObj2 = Tournament.objects.only('id').get(id=2)
     TournamentIdObj3 = Tournament.objects.only('id').get(id=3)
     allMember = Member.objects.all()
-    for member in allMember:
-        memberIdObj = Member.objects.only('id').get(id=member.id)
-        allUserAnswer = UserAnswer.objects.filter(member=memberIdObj).order_by('time')
-        for answer in allUserAnswer:
-            if answer.question.tournament.id == 1:
-                answerCounter[0] += 1
-                if answer.iscorrect:
-                    isCorrect[0] += 1
-                allq[0] = answer.question.tournament.howmany
-            if answer.question.tournament.id == 2:
-                answerCounter[1] += 1
-                if answer.iscorrect:
-                    isCorrect[1] += 1
-                allq[1] = answer.question.tournament.howmany
-            if answer.question.tournament.id == 3:
-                answerCounter[2] += 1
-                if answer.iscorrect:
-                    isCorrect[2] += 1
-                allq[2] = answer.question.tournament.howmany
-        if answerCounter[0] != 0:
-            cash["index"] = counter
-            cash["name"] = member.name
-            cash["phone"] = member.phone
-            cash["pCode"] = member.personalCode
-
-            cash["allQ"] = allq[0]
-            cash["allA"] = answerCounter[0]
-            cash["correctA"] = str(isCorrect[0])
-            datas.append(cash)
-            cash = {}
-        if answerCounter[1] != 0:
-            cash["index"] = counter
-            cash["name"] = member.name
-            cash["phone"] = member.phone
-            cash["pCode"] = member.personalCode
-
-            cash["allQ"] = allq[1]
-            cash["allA"] = answerCounter[1]
-            cash["correctA"] = isCorrect[1]
-            datas2.append(cash)
-            cash = {}
-        if answerCounter[2] != 0:
-            cash["index"] = counter
-            cash["name"] = member.name
-            cash["phone"] = member.phone
-            cash["pCode"] = member.personalCode
-
-            cash["allQ"] = allq[2]
-            cash["allA"] = answerCounter[2]
-            cash["correctA"] = isCorrect[2]
-            datas3.append(cash)
-            cash = {}
-        isCorrect = [0, 0, 0]
-        answerCounter = [0, 0, 0]
-        allq = [0, 0, 0]
-        cash = {}
-        counter += 1
     context = {
         "datas": ResultMember.objects.filter(tournament=TournamentIdObj1),
         "datas2": ResultMember.objects.filter(tournament=TournamentIdObj2),
@@ -110,7 +80,7 @@ def sendCode(request):
             user.verifcode = str(code)
             user.save()
             # todo send sms
-
+            sendSMS(str(code), phone)
             return JsonResponse({"result": True}, status=200)
         except Exception as e:
             return JsonResponse({"result": False}, status=400)
@@ -122,10 +92,11 @@ def checkCode(request):
     try:
         user = Member.objects.get(phone=phone, verifcode=code)
         if user.isadmin:
-            return JsonResponse({"result": False}, status=400)
+            login(request, user)
+            return JsonResponse({"result": True, "valid": True}, status=200)
         else:
             login(request, user)
-            return JsonResponse({"result": True}, status=200)
+            return JsonResponse({"result": True, "valid": False}, status=200)
     except Exception as e:
         return JsonResponse({"result": False}, status=402)
 
