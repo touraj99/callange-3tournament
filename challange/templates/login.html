@@ -26,19 +26,19 @@
           </div>
           <div class="row">
             <div class="col-2">
-              <input type="tel" class="form-control" name="validCode4" id="validCode4" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+              <input type="tel" class="form-control validCode" name="validCode4" id="validCode4" codeindex="4" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
             </div>
             <div class="col-1"></div>
             <div class="col-2">
-              <input type="tel" class="form-control" name="validCode3" id="validCode3" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+              <input type="tel" class="form-control validCode" name="validCode3" id="validCode3" codeindex="3" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
             </div>
             <div class="col-1"></div>
             <div class="col-2">
-              <input type="tel" class="form-control" name="validCode2" id="validCode2" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+              <input type="tel" class="form-control validCode" name="validCode2" id="validCode2" codeindex="2" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
             </div>
             <div class="col-1"></div>
             <div class="col-2">
-              <input type="tel" class="form-control" name="validCode1" id="validCode1" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+              <input type="tel" class="form-control validCode" name="validCode1" id="validCode1" codeindex="1" maxlength="1" oninput="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
             </div>
             <div class="col-2"></div>
           </div>
@@ -53,7 +53,7 @@
             <button type="submit" id="sendCode" class="btn btn-primary btn-block btn-flat">ارسال کد</button>
           </div>
           <div class="col-4" id="resendBtn" style="display: none;">
-            <button type="submit" id="sendCode" class="btn btn-primary btn-block btn-flat">ارسال مجدد</button>
+            <button type="submit" id="resendCode" class="btn btn-primary btn-block btn-flat">ارسال مجدد</button>
           </div>
           <!-- /.col -->
         </div>

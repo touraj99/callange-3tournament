@@ -8,6 +8,7 @@ from time import time
 import datetime as dt
 import requests
 import json
+from django.core.paginator import Paginator
 
 
 def getSmsToken():
@@ -23,7 +24,7 @@ def getSmsToken():
     return (dataResponse["TokenKey"])
 
 
-def sendSMS(code,phone):
+def sendSMS(code, phone):
     token = getSmsToken()
     data = {
         "ParameterArray": [
@@ -42,17 +43,85 @@ def sendSMS(code,phone):
                     )
     return True
 
+
+# @login_required(login_url='/login')
+# def home(request, page):
+#     TournamentIdObj1 = Tournament.objects.only('id').get(id=1)
+#     TournamentIdObj2 = Tournament.objects.only('id').get(id=2)
+#     TournamentIdObj3 = Tournament.objects.only('id').get(id=3)
+#     allMember = Member.objects.all()
+#     datas = ResultMember.objects.filter(tournament=TournamentIdObj1)
+#     datas2 = ResultMember.objects.filter(tournament=TournamentIdObj2)
+#     datas3 = ResultMember.objects.filter(tournament=TournamentIdObj3)
+
+#     datasPagination = Paginator(datas, 10)
+#     datas2Pagination = Paginator(datas2, 10)
+#     datas3Pagination = Paginator(datas3, 10)
+
+#     page_object = datasPagination.get_page(page)
+#     page_object.adjusted_elided_pages = datasPagination.get_elided_page_range(
+#         page)
+#     page_object2 = datas2Pagination.get_page(page)
+#     page_object2.adjusted_elided_pages = datas2Pagination.get_elided_page_range(
+#         page)
+#     page_object3 = datas3Pagination.get_page(page)
+#     page_object3.adjusted_elided_pages = datas3Pagination.get_elided_page_range(
+#         page)
+#     context = {
+#         "datas": page_object,
+#         "datas2": page_object2,
+#         "datas3": page_object3,
+#     }
+#     return render(request, 'adminDashboard.html', context)
+
+
 @login_required(login_url='/login')
-def home(request):
+def firstTournament(request, page):
     TournamentIdObj1 = Tournament.objects.only('id').get(id=1)
-    TournamentIdObj2 = Tournament.objects.only('id').get(id=2)
-    TournamentIdObj3 = Tournament.objects.only('id').get(id=3)
+
     allMember = Member.objects.all()
-    context = {
-        "datas": ResultMember.objects.filter(tournament=TournamentIdObj1),
-        "datas2": ResultMember.objects.filter(tournament=TournamentIdObj2),
-        "datas3": ResultMember.objects.filter(tournament=TournamentIdObj3),
-    }
+    datas = ResultMember.objects.filter(tournament=TournamentIdObj1)
+
+    datasPagination = Paginator(datas, 10)
+
+    page_object = datasPagination.get_page(page)
+    page_object.adjusted_elided_pages = datasPagination.get_elided_page_range(
+        page)
+    context = {"name": "مسابقه اول", "datas": page_object,
+               "tourName": "/adminDashboard/first/"}
+    return render(request, 'adminDashboard.html', context)
+
+
+@login_required(login_url='/login')
+def secondTournament(request, page):
+    TournamentIdObj1 = Tournament.objects.only('id').get(id=2)
+
+    allMember = Member.objects.all()
+    datas = ResultMember.objects.filter(tournament=TournamentIdObj1)
+
+    datasPagination = Paginator(datas, 10)
+
+    page_object = datasPagination.get_page(page)
+    page_object.adjusted_elided_pages = datasPagination.get_elided_page_range(
+        page)
+    context = {"name": "مسابقه دوم", "datas": page_object,
+               "tourName": "/adminDashboard/second/"}
+    return render(request, 'adminDashboard.html', context)
+
+
+@login_required(login_url='/login')
+def thirdTournament(request, page):
+    TournamentIdObj1 = Tournament.objects.only('id').get(id=3)
+
+    allMember = Member.objects.all()
+    datas = ResultMember.objects.filter(tournament=TournamentIdObj1)
+
+    datasPagination = Paginator(datas, 10)
+
+    page_object = datasPagination.get_page(page)
+    page_object.adjusted_elided_pages = datasPagination.get_elided_page_range(
+        page)
+    context = {"name":"مسابقه سوم", "datas": page_object, "tourName": "/adminDashboard/third/"}
     return render(request, 'adminDashboard.html', context)
 
 
@@ -79,7 +148,6 @@ def sendCode(request):
             code = random.randint(1000, 9999)
             user.verifcode = str(code)
             user.save()
-            # todo send sms
             sendSMS(str(code), phone)
             return JsonResponse({"result": True}, status=200)
         except Exception as e:

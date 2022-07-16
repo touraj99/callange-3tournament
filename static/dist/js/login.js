@@ -47,11 +47,10 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     if (response.valid) {
-                        location.href = "/adminDashboard";    
+                        location.href = "/adminDashboard/1";    
                     }else{
                         location.href = "/questions";
                     }
-                    
                 },
                 error: function (response) {
                     alert("کد اشتباه است.");
@@ -89,4 +88,51 @@ $(document).ready(function () {
         });
     });
     
+    $('#resendCode').on('click', function(){
+        var phone = $('#phone').val();
+        $.ajax({
+            url: 'challenge/resendCode',
+            type: 'POST',
+            headers: { 'X-CSRFToken': $("input[name='csrfmiddlewaretoken']").val() },
+            dataType: 'json',
+            data: {
+                phone: phone
+            },
+            success: function (response) {
+                if (response.result) {
+                    $("#mainBtn").removeClass("col-7");
+                    $("#mainBtn").addClass("col-10");
+                    $('#resendBtn').css('display', 'none');
+                    $('.timer').empty();
+                    $('.timer').startTimer();
+                } else {
+                    alert("error");
+                }
+            },
+            error: function (response) {
+                if (response.status == 403) {
+                    alert("در حال حاضر مسابقه ای برگزار نمیشود.")
+                } else {
+                    alert("خطایی رخ داده لطفا با مسئول مربوطه تماس حاصل فرمایید.");
+                }
+            }
+        });
+    });
+
+    jQuery(".validCode").on('keyup', function (e) {
+        var pressedKey = e.key;
+        var codeindex = e.currentTarget.attributes.codeindex.value;
+        if (pressedKey == 'Backspace' || pressedKey == 'Delete') {
+            jQuery(this).val('');
+            if (codeindex > 1) {
+                codeindex--;
+                jQuery(".validCode[codeindex='" + codeindex + "']").focus();
+            }
+        } else {
+            codeindex++;
+            var el = jQuery(".validCode[codeindex='" + codeindex + "']").get(0);
+            el.focus();
+            el.setSelectionRange && el.setSelectionRange(0, 0);
+        }
+    });
 });
